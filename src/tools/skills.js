@@ -37,7 +37,7 @@ export function registerSkillTools(server, client) {
 - **Compatibility**: ${(s.compatibility || []).join(', ') || 'universal'}
 - **Downloads**: ${s.downloads || 0} installs | **Stars**: ${s.stars || 0}
 - **Tags**: ${tags || 'none'}
-- **Install CLI**: \`snix skill add @${author}/${s.slug || s.id}\`
+- **Install CLI**: \`npx @snippkit/cli skill add @${author}/${s.slug || s.id}\`
 `;
         }).join('\n---\n\n');
 
@@ -101,6 +101,55 @@ SKILL.md INSTRUCTIONS
         return {
           isError: true,
           content: [{ type: 'text', text: `Failed to fetch skill "${slug}": ${err.message}` }],
+        };
+      }
+    }
+  );
+
+  // 3. Save / Create Skill
+  server.tool(
+    'snippkit_save_skill',
+    'Save or publish an AI agent skill (SKILL.md) directly to SnippKit registry or your private library.',
+    {
+      title: z.string().describe('Clear, descriptive title for the skill'),
+      content: z.string().describe('The full markdown body / instructions (including YAML frontmatter) of SKILL.md'),
+      description: z.string().optional().describe('Brief summary of what this skill teaches AI agents'),
+      slug: z.string().optional().describe('Optional custom URL slug (e.g. red-white-theme)'),
+      is_public: z.boolean().optional().default(true).describe('True to publish to marketplace, false for private encrypted'),
+      tags: z.array(z.string()).optional().describe('Tags for indexing, e.g. ["ui", "theme", "red", "white", "tailwind"]'),
+      compatibility: z.array(z.string()).optional().default(['antigravity', 'cursor', 'claude-code', 'windsurf']).describe('Supported AI agent platforms'),
+      version: z.string().optional().default('1.0.0').describe('Semantic version string, e.g. 1.0.0'),
+    },
+    async ({ title, content, description = '', slug, is_public = true, tags = [], compatibility = ['antigravity', 'cursor', 'claude-code', 'windsurf'], version = '1.0.0' }) => {
+      try {
+        const saved = await client.saveSkill({
+          title,
+          content,
+          description,
+          slug,
+          is_public,
+          tags,
+          compatibility,
+          version,
+        });
+
+        const skillObj = saved.skill || saved;
+        const author = skillObj.author?.username || 'you';
+        const finalSlug = skillObj.slug || slug || 'skill';
+        const webUrl = `http://localhost:3000/skills/${finalSlug}`;
+
+        return {
+          content: [
+            {
+              type: 'text',
+              text: `Successfully saved skill to SnippKit!\n- **Title**: ${title}\n- **Slug**: \`@${author}/${finalSlug}\`\n- **Version**: ${version}\n- **Access**: ${is_public ? 'Public (Marketplace)' : 'Private (Encrypted)'}\n- **Web URL**: ${webUrl}\n- **Install CLI**: \`npx @snippkit/cli skill add @${author}/${finalSlug}\``,
+            },
+          ],
+        };
+      } catch (err) {
+        return {
+          isError: true,
+          content: [{ type: 'text', text: `Failed to save skill to SnippKit: ${err.message}` }],
         };
       }
     }

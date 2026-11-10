@@ -16,7 +16,7 @@ export function createServer() {
   const server = new McpServer(
     {
       name: 'snippkit',
-      version: '1.0.0',
+      version: '1.0.1',
     },
     {
       capabilities: {
@@ -43,7 +43,7 @@ export async function startServer() {
   const transport = new StdioServerTransport();
 
   // Log diagnostic info to stderr (stdout is strictly reserved for JSON-RPC MCP messages!)
-  console.error('[snippkit-mcp] Initializing SnippKit MCP Server v1.0.0...');
+  console.error('[snippkit-mcp] Initializing SnippKit MCP Server v1.0.1...');
   console.error(`[snippkit-mcp] API Endpoint: ${config.apiUrl}`);
   if (config.apiKey) {
     const masked = `${config.apiKey.slice(0, 7)}...${config.apiKey.slice(-4)}`;

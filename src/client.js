@@ -11,7 +11,7 @@ export class SnippKitClient {
       baseURL: apiUrl,
       headers: {
         'Content-Type': 'application/json',
-        'User-Agent': '@snippkit/mcp-server/1.0.0',
+        'User-Agent': '@snippkit/mcp-server/1.0.1',
       },
       timeout: 15000,
     });
@@ -61,6 +61,37 @@ export class SnippKitClient {
 
     const fallbackRes = await this.http.get(`/api/cli/run?type=skills&id=${encodeURIComponent(target)}`);
     return fallbackRes.data;
+  }
+
+  async saveSkill({
+    title,
+    content,
+    description = '',
+    compatibility = ['antigravity', 'cursor', 'claude-code', 'windsurf'],
+    tags = [],
+    version = '1.0.0',
+    is_public = true,
+    slug,
+  } = {}) {
+    if (!this.apiKey) {
+      throw new Error('SnippKit API Key is required to save skills. Set SNIPPKIT_API_KEY environment variable.');
+    }
+    if (!title) throw new Error('Skill title is required');
+    if (!content) throw new Error('Skill content is required');
+
+    const payload = {
+      title,
+      content,
+      description,
+      compatibility: Array.isArray(compatibility) ? compatibility : ['antigravity', 'cursor', 'claude-code', 'windsurf'],
+      tags: Array.isArray(tags) ? tags : [],
+      version,
+      is_public: Boolean(is_public),
+      slug,
+    };
+
+    const res = await this.http.post('/api/skills/create', payload);
+    return res.data;
   }
 
   // --------------------------------------------------------------------------

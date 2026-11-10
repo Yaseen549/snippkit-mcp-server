@@ -1,6 +1,6 @@
 {
   "name": "@snippkit/mcp-server",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Official Model Context Protocol (MCP) Server for SnippKit - Seamless integration with AI agents (Cursor, Claude Desktop, Antigravity, Windsurf) for Agent Skills, Code Snippets, and Shell Commands.",
   "main": "src/index.js",
   "type": "module",
