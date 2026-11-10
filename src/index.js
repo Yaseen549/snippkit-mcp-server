@@ -55,3 +55,4 @@ export async function startServer() {
   await server.connect(transport);
   console.error('[snippkit-mcp] Connected over stdio transport. Listening for agent requests.');
 }
+

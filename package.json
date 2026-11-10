@@ -5,7 +5,8 @@
   "main": "src/index.js",
   "type": "module",
   "bin": {
-    "snippkit-mcp": "./bin/index.js"
+    "snippkit-mcp": "bin/index.js",
+    "mcp-server": "bin/index.js"
   },
   "files": [
     "bin",
@@ -13,6 +14,17 @@
     "README.md",
     "LICENSE"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Yaseen549/snippkit-mcp-server.git"
+  },
+  "homepage": "https://snippkit.com",
+  "bugs": {
+    "url": "https://github.com/Yaseen549/snippkit-mcp-server/issues"
+  },
   "scripts": {
     "start": "node bin/index.js",
     "dev": "node bin/index.js"
@@ -28,7 +40,7 @@
     "antigravity",
     "windsurf"
   ],
-  "author": "SnippKit Team",
+  "author": "SnippKit",
   "license": "MIT",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.6.0",

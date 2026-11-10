@@ -87,3 +87,4 @@ export function getConfig() {
 
   return { apiKey, apiUrl };
 }
+

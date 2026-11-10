@@ -100,3 +100,4 @@ The server checks credentials in this order:
 ## 📄 License
 
 MIT © [SnippKit](https://snippkit.com)
+
