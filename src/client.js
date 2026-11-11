@@ -158,6 +158,42 @@ export class SnippKitClient {
     return res.data;
   }
 
+  async saveCommand({ title, commands, language = 'bash', is_public = false, tags = [], slug, folder_id = null } = {}) {
+    if (!this.apiKey) {
+      throw new Error('SnippKit API Key is required to save commands. Set SNIPPKIT_API_KEY environment variable.');
+    }
+    if (!title) throw new Error('Command title is required');
+    if (!commands) throw new Error('Command list is required');
+
+    // Normalize commands into an array of command lines
+    let commandList = [];
+    if (Array.isArray(commands)) {
+      commandList = commands.map((c) => String(c).trim()).filter(Boolean);
+    } else if (typeof commands === 'string') {
+      commandList = commands
+        .split(/\r?\n/)
+        .map((line) => line.trim())
+        .filter(Boolean);
+    }
+
+    if (commandList.length === 0) {
+      throw new Error('At least one executable shell command or step is required.');
+    }
+
+    const payload = {
+      title,
+      commands: commandList,
+      language: language ? language.toLowerCase() : 'bash',
+      is_public: Boolean(is_public),
+      tags: Array.isArray(tags) ? tags : [],
+      slug: slug || null,
+      folder_id: folder_id || null,
+    };
+
+    const res = await this.http.post('/api/c/create', payload);
+    return res.data;
+  }
+
   // --------------------------------------------------------------------------
   // FOLDERS
   // --------------------------------------------------------------------------

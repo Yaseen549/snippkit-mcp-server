@@ -67,11 +67,13 @@ In your MCP configuration file:
 | :--- | :--- |
 | `snippkit_search_skills` | Search public and team AI Skills in the SnippKit registry by keywords or agent compatibility. |
 | `snippkit_get_skill` | Fetch complete `SKILL.md` instructions and procedural rules to guide agent execution. |
+| `snippkit_save_skill` | Save or publish an AI agent skill (`SKILL.md`) directly to SnippKit registry or your private library. |
 | `snippkit_search_snippets` | Search your private and public code snippets by title, tag, or language. |
 | `snippkit_get_snippet` | Retrieve decrypted code from your SnippKit library. |
 | `snippkit_save_snippet` | Save newly written or refactored code directly into SnippKit from the agent. |
 | `snippkit_search_commands` | Search verified shell scripts and DevOps command runbooks. |
-| `snippkit_get_command` | Retrieve shell command scripts. |
+| `snippkit_get_command` | Retrieve shell command scripts from a runbook. |
+| `snippkit_save_command` | Save a shell command, deployment script, or multi-step runbook directly into your SnippKit library. |
 
 ---
 

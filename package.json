@@ -1,6 +1,6 @@
 {
   "name": "@snippkit/mcp-server",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Official Model Context Protocol (MCP) Server for SnippKit - Seamless integration with AI agents (Cursor, Claude Desktop, Antigravity, Windsurf) for Agent Skills, Code Snippets, and Shell Commands.",
   "main": "src/index.js",
   "type": "module",
@@ -42,6 +42,21 @@
   ],
   "author": "SnippKit",
   "license": "MIT",
+  "mcp": {
+    "server": "snippkit",
+    "protocolVersion": "2024-11-05",
+    "tools": [
+      { "name": "snippkit_search_skills", "category": "skills", "description": "Search public and team AI Skills in the SnippKit registry by keywords or agent compatibility" },
+      { "name": "snippkit_get_skill", "category": "skills", "description": "Fetch complete SKILL.md instructions and procedural rules" },
+      { "name": "snippkit_save_skill", "category": "skills", "description": "Author or publish an AI agent skill directly to SnippKit registry" },
+      { "name": "snippkit_search_snippets", "category": "snippets", "description": "Search your private and public code snippets by title, tag, or language" },
+      { "name": "snippkit_get_snippet", "category": "snippets", "description": "Retrieve decrypted code from your SnippKit library" },
+      { "name": "snippkit_save_snippet", "category": "snippets", "description": "Save newly written or refactored code directly into SnippKit" },
+      { "name": "snippkit_search_commands", "category": "commands", "description": "Search verified shell scripts and DevOps command runbooks" },
+      { "name": "snippkit_get_command", "category": "commands", "description": "Retrieve shell command scripts from a runbook" },
+      { "name": "snippkit_save_command", "category": "commands", "description": "Save a shell command, deployment script, or multi-step runbook directly into your SnippKit library" }
+    ]
+  },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.6.0",
     "axios": "^1.7.9",

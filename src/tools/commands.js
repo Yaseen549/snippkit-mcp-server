@@ -86,5 +86,48 @@ export function registerCommandTools(server, client) {
       }
     }
   );
+
+  // 3. Save Command
+  server.tool(
+    'snippkit_save_command',
+    'Save a shell command, deployment script, or multi-step runbook directly into your SnippKit library.',
+    {
+      title: z.string().describe('Clear, descriptive title for the command runbook'),
+      commands: z.union([z.array(z.string()), z.string()]).describe('The shell command or array of sequential shell commands'),
+      language: z.string().default('bash').optional().describe("Shell language (e.g. 'bash', 'sh', 'zsh', 'powershell')"),
+      tags: z.array(z.string()).optional().describe("Tags for indexing, e.g. ['docker', 'deploy', 'cleanup']"),
+      is_public: z.boolean().default(false).optional().describe('Set to true for public runbook, false for encrypted private runbook'),
+      slug: z.string().optional().describe('Optional custom URL slug'),
+    },
+    async ({ title, commands, language = 'bash', tags = [], is_public = false, slug }) => {
+      try {
+        const result = await client.saveCommand({
+          title,
+          commands,
+          language,
+          tags,
+          is_public,
+          slug,
+        });
+
+        const id = result.id || 'saved';
+        const urlSlug = result.slug || slug || id;
+
+        return {
+          content: [
+            {
+              type: 'text',
+              text: `Successfully saved command runbook "${title}" to your SnippKit library!\n- **ID**: \`${id}\`\n- **Slug**: \`${urlSlug}\`\n- **Visibility**: ${is_public ? 'Public' : 'Private (Encrypted)'}`,
+            },
+          ],
+        };
+      } catch (err) {
+        return {
+          isError: true,
+          content: [{ type: 'text', text: `Failed to save command: ${err.message}` }],
+        };
+      }
+    }
+  );
 }
 
